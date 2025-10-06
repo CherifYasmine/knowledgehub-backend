@@ -3,6 +3,11 @@
 import os
 import sys
 
+# Load .env automatically
+import environ
+
+environ.Env.read_env()
+
 
 def main():
     """Run administrative tasks."""

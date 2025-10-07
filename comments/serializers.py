@@ -3,7 +3,11 @@ from .models import Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    """Serializer for Comment model."""
+    """Serializer for Comment model.
+
+    The `author` is set automatically from `request.user` during create().
+    Clients should not supply `author` in the POST payload.
+    """
 
     author_name = serializers.CharField(
         source="author.get_full_name", read_only=True
@@ -30,9 +34,28 @@ class CommentSerializer(serializers.ModelSerializer):
             "updated_at",
             "edited_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at", "edited_at"]
+        read_only_fields = [
+            "id",
+            "created_at",
+            "updated_at",
+            "edited_at",
+            "author",
+        ]
 
     def create(self, validated_data):
-        # Set the author to the current user
-        validated_data["author"] = self.context["request"].user
+        request = self.context.get("request")
+        if (
+            request
+            and hasattr(request, "user")
+            and request.user.is_authenticated
+        ):
+            validated_data["author"] = request.user
         return super().create(validated_data)
+
+
+class ContentTypeSerializer(serializers.Serializer):
+    """Read-only serializer for django ContentType entries."""
+
+    id = serializers.IntegerField(read_only=True)
+    app_label = serializers.CharField(read_only=True)
+    model = serializers.CharField(read_only=True)

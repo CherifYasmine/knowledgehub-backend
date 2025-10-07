@@ -7,6 +7,9 @@ app_name = "comments"
 # Create router and register viewsets
 router = DefaultRouter()
 router.register(r"comments", views.CommentViewSet)
+router.register(
+    r"content-types", views.ContentTypeViewSet, basename="contenttype"
+)
 
 urlpatterns = [
     path("", include(router.urls)),

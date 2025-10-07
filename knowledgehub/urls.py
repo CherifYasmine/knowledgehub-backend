@@ -39,4 +39,6 @@ urlpatterns = [
     ),
     # API endpoints
     path("api/users/", include("users.urls")),
+    path("api/wiki/", include("wiki.urls")),
+    path("api/comments/", include("comments.urls")),
 ]

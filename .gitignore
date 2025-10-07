@@ -6,7 +6,7 @@ __pycache__/
 *.pyd
 *.env
 .env.docker
-
+.flake8
 # Virtualenv
 .venv/
 env/

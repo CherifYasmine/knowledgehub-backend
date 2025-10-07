@@ -40,3 +40,6 @@ rebuild-web:
 
 up-web:
 	docker-compose up web
+
+dependencies-up:
+	docker-compose up -d db redis
